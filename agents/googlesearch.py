@@ -25,10 +25,8 @@ class GoogleSearchTool(BaseTool):
 
     # 3. REQUIRED: Implement the asynchronous abstract method (or raise)
     async def _arun(self, query: str):
-        # This is okay if you don't need async support
         raise NotImplementedError("Async run not supported by this tool.")
 
-# Instantiate the LangChain tool (This line should now work)
 _search_tool_instance = GoogleSearchTool() 
 
 # Define the wrapper function for LlmAgent compatibility

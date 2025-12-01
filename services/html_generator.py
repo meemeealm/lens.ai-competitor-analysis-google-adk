@@ -12,7 +12,6 @@ def format_html_from_json(data: Dict[str, Any]) -> str:
     """
     Convert JSON competitor data to formatted HTML report
     
-    This is a pure Python function - NO LLM CALLS
     Significantly reduces costs by avoiding unnecessary AI processing
     
     Args:
