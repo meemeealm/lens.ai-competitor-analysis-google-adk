@@ -6,8 +6,11 @@ Orchestrates the agent, data processing, and report generation
 import json
 from typing import Dict, Any, List, Tuple
 from datetime import datetime
-
 from google.adk.runners import Runner
+
+from google.genai.types import Message, Role
+
+from google.adk.sessions import InMemorySessionService
 from agents import create_competitor_agent
 from services import format_html_from_json
 
@@ -24,9 +27,16 @@ class OptimizedCompetitorAnalysisPipeline:
     
     def __init__(self):
         """Initialize the pipeline with agent and runner"""
+        session_service = InMemorySessionService()
         self.agent = create_competitor_agent()
-        self.runner = Runner()
+
+        self.runner = Runner(
+            agent=self.agent,
+            app_name="competitor_pipeline_app",
+            session_service=session_service  # Pass the concrete instance
+        )
     
+
     def analyze_competitor(
         self, 
         company_website: str, 
@@ -55,11 +65,29 @@ class OptimizedCompetitorAnalysisPipeline:
         
         # Step 2: Run AI agent (SINGLE LLM CALL)
         print("🔍 Running AI analysis with web search...")
-        response = self.runner.run(agent=self.agent, input_text=prompt)
+
+        user_message = Message(
+        content=prompt,
+        role=Role.USER)
+
+        response = self.runner.run(user_id="competitor_analysis_user", session_id="analysis_session_123", new_message=prompt)
+        
+        raw_final_content = None
+        final_response = ""
+        for event in response:
+            if event.is_final_response():
+                if event.content and event.content.parts and event.content.parts[0].text:
+                    raw_final_content = event.content.parts[0].text
+                    break
         
         # Step 3: Parse JSON response
-        structured_data = self._parse_response(response)
-        print("✅ Data collected and structured\n")
+        if raw_final_content:
+            print("✅ Received final content. Attempting to parse...")
+            structured_data = self._parse_response(raw_final_content)
+        else:
+            print("❌ Agent failed to produce a final response event.")
+            structured_data = {}
+        
         
         # Step 4: Generate HTML (NO LLM - Pure Python)
         print("📄 Generating HTML report (no LLM call)...")

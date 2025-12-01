@@ -8,6 +8,8 @@ from google.adk.agents import LlmAgent
 from google.adk.models.google_llm import Gemini
 from .schemas import COMPETITOR_ANALYSIS_SCHEMA
 
+from .googlesearch import google_search_func
+
 
 def create_competitor_agent() -> LlmAgent:
     """
@@ -68,5 +70,5 @@ EXAMPLE OUTPUT:
   ...
 }}
         """,
-        tools=["google_search"]  # Enable web search capability
+        tools=[google_search_func]  # Enable web search capability
     )
