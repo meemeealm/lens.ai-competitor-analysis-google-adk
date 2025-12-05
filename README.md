@@ -4,11 +4,11 @@ AI-powered competitor analysis using Google ADK and Gemini AI.
 
 ## Features
 
-✅ **Single Competitor Analysis** - Analyze one company at a time
+✅ **Single Competitor Analysis** - Analyze one company at a time  
 ✅ **Batch Processing** - Analyze multiple competitors in one call  
-✅ **Cost Optimized** - 67-90% savings vs traditional approaches
-✅ **Web Search Enabled** - Automatic web research
-✅ **Beautiful Reports** - Professional HTML reports
+✅ **Cost Optimized** - 67-90% savings vs traditional approaches  
+✅ **Web Search Enabled** - Automatic web research  
+✅ **Beautiful Reports** - Professional HTML reports  
 
 ## Setup:
     1. pip install -r requirements.txt
